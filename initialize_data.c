@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:28:59 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/25 21:26:44 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:02:06 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_data	*initialize_data(int *parameters)
 {
 	t_data	*data;
 	int		n_philos;
+	int		i;
 	struct timeval initial_time;
 
 	n_philos = parameters[0];
@@ -28,6 +29,9 @@ t_data	*initialize_data(int *parameters)
 	data->philos = (pthread_t *) malloc((n_philos) * sizeof(pthread_t));
 	data->forks = (pthread_mutex_t *) malloc((n_philos) * \
 										sizeof(pthread_mutex_t));
+	i = -1;
+	while (++i < n_philos)
+		pthread_mutex_init(&data->forks[i], NULL);
 	gettimeofday(&initial_time, NULL);
 	data->initial_time_ms = (initial_time.tv_sec * 1000) + \
 								(initial_time.tv_usec / 1000);

@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/25 20:37:42 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:20:06 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,34 @@
 
 void	*routine(void *philo_ind_i)
 {
-	//t_data	*data;
+	t_data	*data;
+	int	c;
+	int	ind;
 
 	printf("data->time_to_die = %d\n", ((t_philo_ind *) philo_ind_i)->data->time_to_die);
-	//data = 	((t_philo_ind *) philo_ind_i)->data;
+	data = 	((t_philo_ind *) philo_ind_i)->data;
+	ind = ((t_philo_ind *) philo_ind_i)->ind;
+	c = 0;
+	while (c <= data->number_of_times_each_philosopher_must_eat)
+	{
+		pthread_mutex_lock(&data->forks[ind]);
+		printf("started eating\n");
+		if (ind == 0)
+			pthread_mutex_lock(&data->forks[data->number_of_philosophers]);
+		else
+			pthread_mutex_lock(&data->forks[ind - 1]);
+		usleep(data->time_to_eat * 1000);
+		printf("finished eating\n");
+		pthread_mutex_unlock(&data->forks[ind]);
+		c++;
+		if (ind == 0)
+			pthread_mutex_unlock(&data->forks[data->number_of_philosophers]);
+		else
+			pthread_mutex_unlock(&data->forks[ind - 1]);
+		printf("started sleeping\n");
+		usleep(data->time_to_sleep * 1000);
+		printf("finished sleeping\n");
+	}
 	
 	return (NULL);
 }
