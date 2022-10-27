@@ -7,6 +7,7 @@ SRCS	= main.c\
 		  initialize_data.c\
 		  free_data.c\
 		  get_timestamp.c\
+		  try_to_eat.c\
 
 SRCS_B	= 
 

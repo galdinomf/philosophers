@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:37:52 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/26 11:03:28 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:49:13 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 void	free_data(t_data *data)
 {
-	int	i;
-
+	pthread_mutex_destroy(&data->mutex);
 	free(data->philos);
-	i = -1;
-	while (++i < data->number_of_philosophers)
-		pthread_mutex_destroy(&data->forks[i]);
 	free(data->forks);
 	free(data);
 }

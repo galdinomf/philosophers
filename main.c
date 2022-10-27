@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:23:05 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/25 21:29:09 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:40:35 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,13 @@
 int	main(int argc, char *argv[])
 {
 	int	parameters[5];
-	int	i;
+	//int	i;
 	t_data	*data;
 
 
 	if (check_input_and_initialize(argc, argv, parameters))
 		return (1);
 	data = initialize_data(parameters);
-	usleep(1000000);
-	i = get_time_stamp(data);
-	printf("timestamp = %d\n", i);
 	initialize_simulation(data);
 	/*
 	printf("data->number_of_philosophers = %d\n", data->number_of_philosophers);
