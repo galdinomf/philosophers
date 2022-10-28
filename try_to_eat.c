@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:38:51 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/27 14:55:29 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 11:04:35 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,21 @@ int	try_to_eat(t_philo_ind *philo_ind)
 		left_ind = data->number_of_philosophers - 1;
 	else
 		left_ind = ind - 1;
-	pthread_mutex_lock(&data->mutex);
+	if (ind > left_ind)
+	{
+		pthread_mutex_lock(&data->forks_mutex[ind]);
+		pthread_mutex_lock(&data->forks_mutex[left_ind]);
+	}
+	else
+	{
+		if (left_ind != ind)
+			pthread_mutex_lock(&data->forks_mutex[left_ind]);
+		pthread_mutex_lock(&data->forks_mutex[ind]);
+	}
+	//pthread_mutex_lock(&data->forks_mutex[ind]);
+	//if (ind != left_ind)
+	//	pthread_mutex_lock(&data->forks_mutex[left_ind]);
+	printf("ind = %d, left_ind = %d\n", ind, left_ind);
 	if ((data->forks[ind] == 0) && (data->forks[left_ind] == 0))
 	{
 		take_fork(philo_ind, ind);
@@ -68,6 +82,8 @@ int	try_to_eat(t_philo_ind *philo_ind)
 		lay_fork_down(philo_ind, ind);
 		lay_fork_down(philo_ind, left_ind);
 	}
-	pthread_mutex_unlock(&data->mutex);
+	pthread_mutex_unlock(&data->forks_mutex[ind]);
+		if (ind != left_ind)
+	pthread_mutex_unlock(&data->forks_mutex[left_ind]);
 	return (has_not_eaten);
 }

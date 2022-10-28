@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/27 15:55:30 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 09:33:48 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	*routine(void *philo_ind_i)
 //	c = 0;
 	while (1)
 	{
-		printf("c = %d\n", data->c);
 		printf("%d %d is thinking\n", get_timestamp(data), ind + 1);
 		while (try_to_eat(philo_ind_i))
 			;

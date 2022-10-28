@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:28:59 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/27 14:49:23 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:05:04 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ t_data	*initialize_data(int *parameters)
 	i = -1;
 	while (++i < n_philos)
 		data->forks[i] = 0;
+	data->forks_mutex = (pthread_mutex_t *) malloc((n_philos) * sizeof(pthread_mutex_t));
+	i = -1;
+	while (++i < n_philos)
+		pthread_mutex_init(&data->forks_mutex[i], NULL);
 	gettimeofday(&initial_time, NULL);
 	data->initial_time_ms = (initial_time.tv_sec * 1000) + \
 								(initial_time.tv_usec / 1000);

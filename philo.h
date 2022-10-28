@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:22:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/27 14:48:15 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 09:01:39 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 typedef struct s_data
 {
 	pthread_t	*philos;
-	pthread_mutex_t	mutex;	
+	pthread_mutex_t	mutex;
+	pthread_mutex_t	*forks_mutex;
 	int			*forks;
 	int			number_of_philosophers;
 	int			time_to_die;
