@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:37:52 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 09:06:42 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 14:46:41 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ void	free_data(t_data *data)
 		pthread_mutex_destroy(&data->forks_mutex[i]);
 	free(data->forks_mutex);
 	pthread_mutex_destroy(&data->mutex);
+	pthread_mutex_destroy(&data->counter_mutex);
 	free(data->philos);
 	free(data->forks);
+	free(data->counter);
 	free(data);
 }

@@ -6,11 +6,24 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 09:33:48 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 15:10:00 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	set_end_simulation_var_value(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->number_of_philosophers)
+	{
+		if (data->counter[i] < data->number_of_times_each_philosopher_must_eat)
+			break ;
+	}
+	data->end_simulation = (i == data->number_of_philosophers);
+}
 
 void	*routine(void *philo_ind_i)
 {
@@ -25,11 +38,23 @@ void	*routine(void *philo_ind_i)
 //	c = 0;
 	while (1)
 	{
+		pthread_mutex_lock(&data->counter_mutex);
+		if (data->end_simulation)
+		{
+			pthread_mutex_unlock(&data->counter_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->counter_mutex);
 		printf("%d %d is thinking\n", get_timestamp(data), ind + 1);
 		while (try_to_eat(philo_ind_i))
 			;
+		pthread_mutex_lock(&data->counter_mutex);
+		data->counter[ind]++;
+		set_end_simulation_var_value(data);
+		pthread_mutex_unlock(&data->counter_mutex);
 		printf("%d %d is sleeping\n", get_timestamp(data), ind + 1);
 		usleep(data->time_to_sleep * 1000);
+		/*
 		pthread_mutex_lock(&data->mutex);
 		data->c++;
 		if (data->c > data->number_of_times_each_philosopher_must_eat)
@@ -38,6 +63,7 @@ void	*routine(void *philo_ind_i)
 			break;
 		}
 		pthread_mutex_unlock(&data->mutex);
+		*/
 	}
 	return (NULL);
 }
