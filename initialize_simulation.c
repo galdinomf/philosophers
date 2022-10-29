@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/29 12:47:41 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/29 12:55:55 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	*death_check(void *philo_ind)
 			display_message("died", ((t_philo_ind **) philo_ind)[i]);
 			pthread_mutex_lock(&data->counter_mutex);
 			data->end_simulation = 1;
-			data->all_alive = 0;
 			pthread_mutex_unlock(&data->counter_mutex);
 			break;
 		}
@@ -81,7 +80,7 @@ void	*routine(void *philo_ind_i)
 		while (try_to_eat(philo_ind_i))
 			;
 		pthread_mutex_lock(&data->counter_mutex);
-		if (data->all_alive)
+		if (data->end_simulation == 0)
 			data->counter[ind]++;
 		set_end_simulation_var_value(data);
 		pthread_mutex_unlock(&data->counter_mutex);
