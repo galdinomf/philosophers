@@ -10,6 +10,7 @@ SRCS	= main.c\
 		  try_to_eat.c\
 		  display_message.c\
 		  ft_strjoin.c\
+		  ft_calloc.c\
 
 SRCS_B	= 
 

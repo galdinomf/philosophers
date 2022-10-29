@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:22:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 19:36:57 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 21:46:45 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@
 typedef struct s_data
 {
 	pthread_t	*philos;
+	pthread_t	killer;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	counter_mutex;
 	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	*eat_time_mutex;
 	int			*forks;
+	int			*counter;
+	int			*eat_time;
 	int			number_of_philosophers;
 	int			time_to_die;
 	int			time_to_eat;
@@ -35,7 +39,6 @@ typedef struct s_data
 	int			number_of_times_each_philosopher_must_eat;
 	int			initial_time_ms;
 	int			c;
-	int			*counter;
 	int			end_simulation;
 	int			all_alive;
 }	t_data;
@@ -50,6 +53,7 @@ int	ft_atoi(const char *nptr);
 int	ft_isdigit(int c);
 int	ft_strlen(char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 int	check_input_and_initialize(int argc, char *argv[], int *parameters);
 t_data	*initialize_data(int *parameters);

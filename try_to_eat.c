@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:38:51 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 19:44:23 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 23:33:41 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 void	take_fork(t_philo_ind *philo_ind, int fork_ind)
 {
 	int *forks;
-	int	timestamp;
+//	int	timestamp;
 
 	forks = philo_ind->data->forks;
 	forks[fork_ind] = 1;
-	timestamp = get_timestamp(philo_ind->data);
-	printf("%d %d has taken a fork\n", timestamp, philo_ind->ind + 1);
+//	timestamp = get_timestamp(philo_ind->data);
+	display_message("has taken a fork", philo_ind);
+	//printf("%d %d has taken a fork\n", timestamp, philo_ind->ind + 1);
 }
 
 void	lay_fork_down(t_philo_ind *philo_ind, int fork_ind)
@@ -34,14 +35,17 @@ void	lay_fork_down(t_philo_ind *philo_ind, int fork_ind)
 void	eat(t_philo_ind *philo_ind)
 {
 	t_data	*data;
-//	int		ind;
+	int		ind;
 //	int		timestamp;
 
 	data = philo_ind->data;
-//	ind = philo_ind->ind;
+	ind = philo_ind->ind;
 //	timestamp = get_timestamp(data);
 	display_message("is eating", philo_ind);
 	//printf("%d %d is eating\n", timestamp, ind + 1);
+	pthread_mutex_lock(&data->eat_time_mutex[ind]);	
+	data->eat_time[ind] = get_timestamp(data);
+	pthread_mutex_unlock(&data->eat_time_mutex[ind]);	
 	usleep(data->time_to_eat * 1000);
 }
 
@@ -59,6 +63,7 @@ int	try_to_eat(t_philo_ind *philo_ind)
 		left_ind = data->number_of_philosophers - 1;
 	else
 		left_ind = ind - 1;
+	//printf("ind = %d, left_ind = %d\n", ind, left_ind);
 	if (ind > left_ind)
 	{
 		pthread_mutex_lock(&data->forks_mutex[ind]);
