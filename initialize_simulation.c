@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 23:20:30 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/29 12:47:41 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ void	*routine(void *philo_ind_i)
 		while (try_to_eat(philo_ind_i))
 			;
 		pthread_mutex_lock(&data->counter_mutex);
-		data->counter[ind]++;
+		if (data->all_alive)
+			data->counter[ind]++;
 		set_end_simulation_var_value(data);
 		pthread_mutex_unlock(&data->counter_mutex);
 		display_message("is sleeping", philo_ind_i);
