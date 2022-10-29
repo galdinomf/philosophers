@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:38:51 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 11:04:35 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:44:23 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ void	lay_fork_down(t_philo_ind *philo_ind, int fork_ind)
 void	eat(t_philo_ind *philo_ind)
 {
 	t_data	*data;
-	int		ind;
-	int		timestamp;
+//	int		ind;
+//	int		timestamp;
 
 	data = philo_ind->data;
-	ind = philo_ind->ind;
-	timestamp = get_timestamp(data);
-	printf("%d %d is eating\n", timestamp, ind + 1);
+//	ind = philo_ind->ind;
+//	timestamp = get_timestamp(data);
+	display_message("is eating", philo_ind);
+	//printf("%d %d is eating\n", timestamp, ind + 1);
 	usleep(data->time_to_eat * 1000);
 }
 
@@ -72,7 +73,7 @@ int	try_to_eat(t_philo_ind *philo_ind)
 	//pthread_mutex_lock(&data->forks_mutex[ind]);
 	//if (ind != left_ind)
 	//	pthread_mutex_lock(&data->forks_mutex[left_ind]);
-	printf("ind = %d, left_ind = %d\n", ind, left_ind);
+	//printf("ind = %d, left_ind = %d\n", ind, left_ind);
 	if ((data->forks[ind] == 0) && (data->forks[left_ind] == 0))
 	{
 		take_fork(philo_ind, ind);

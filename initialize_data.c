@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:28:59 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 15:07:02 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:23:57 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_data	*initialize_data(int *parameters)
 								(initial_time.tv_usec / 1000);
 	data->c = 0;
 	data->end_simulation = 0;
+	data->all_alive = 1;
 	pthread_mutex_init(&data->mutex, NULL);
 	pthread_mutex_init(&data->counter_mutex, NULL);
 	return (data);

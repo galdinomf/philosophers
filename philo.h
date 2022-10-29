@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:22:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/28 15:01:46 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:36:57 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data
 	int			c;
 	int			*counter;
 	int			end_simulation;
+	int			all_alive;
 }	t_data;
 
 typedef struct s_philo_ind
@@ -45,16 +46,17 @@ typedef struct s_philo_ind
 	int		ind;
 }	t_philo_ind;
 
-int	check_input_and_initialize(int argc, char *argv[], int *parameters);
 int	ft_atoi(const char *nptr);
 int	ft_isdigit(int c);
 int	ft_strlen(char *str);
+char	*ft_strjoin(char const *s1, char const *s2);
 
+int	check_input_and_initialize(int argc, char *argv[], int *parameters);
 t_data	*initialize_data(int *parameters);
 void	free_data(t_data *data);
 int	initialize_simulation(t_data *data);
 t_philo_ind	**initialize_philo_ind(t_data *data);
 int	get_timestamp(t_data *data);
 int	try_to_eat(t_philo_ind *philo_ind);
-
+void	display_message(char *msg, t_philo_ind *philo_ind);
 #endif

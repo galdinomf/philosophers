@@ -8,6 +8,8 @@ SRCS	= main.c\
 		  free_data.c\
 		  get_timestamp.c\
 		  try_to_eat.c\
+		  display_message.c\
+		  ft_strjoin.c\
 
 SRCS_B	= 
 
