@@ -6,11 +6,23 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/02 09:20:36 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:23:08 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	simulation_should_end(t_data *data)
+{
+	pthread_mutex_lock(&data->counter_mutex);
+	if (data->end_simulation)
+	{
+		pthread_mutex_unlock(&data->counter_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&data->counter_mutex);
+		return (0);
+}
 
 void	set_end_simulation_var_value(t_data *data)
 {
@@ -66,19 +78,16 @@ void	*routine(void *philo_ind_i)
 //	c = 0;
 	while (1)
 	{
-		pthread_mutex_lock(&data->counter_mutex);
-		//printf("data->end_simulation = %d\n", data->end_simulation);
-			//printf("end_simulation do routine = %d\n", data->end_simulation);
-		if (data->end_simulation)
-		{
-			pthread_mutex_unlock(&data->counter_mutex);
+		if (simulation_should_end(data))
 			break ;
-		}
-		pthread_mutex_unlock(&data->counter_mutex);
 		display_message("is thinking", philo_ind_i);
 		//printf("%d %d is thinking\n", get_timestamp(data), ind + 1);
 		while (try_to_eat(philo_ind_i))
-			;
+		{
+			if (simulation_should_end(data))
+				break ;
+			usleep(1000);
+		}
 		pthread_mutex_lock(&data->counter_mutex);
 		if (data->end_simulation == 0)
 			data->counter[ind]++;

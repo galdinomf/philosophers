@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:38:51 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/02 09:17:27 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:17:55 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,37 @@ void	unlock_fork_mutexes(int ind, int left_ind, t_data *data)
 	}
 }
 
-void	take_fork(t_philo_ind *philo_ind, int fork_ind)
+int	take_fork(t_philo_ind *philo_ind, int fork_ind)
 {
 	int *forks;
-//	int	timestamp;
+	int	result;
+	t_data	*data;
 
+	result = 0;
+	data = philo_ind->data;
 	forks = philo_ind->data->forks;
-	forks[fork_ind] = 1;
-//	timestamp = get_timestamp(philo_ind->data);
-	display_message("has taken a fork", philo_ind);
-	//printf("%d %d has taken a fork\n", timestamp, philo_ind->ind + 1);
+	pthread_mutex_lock(&data->forks_mutex[fork_ind]);
+	if (data->forks[fork_ind] == 0)
+	{	
+		forks[fork_ind] = philo_ind->ind + 1;
+		display_message("has taken a fork", philo_ind);
+		result = 1;
+	}
+	pthread_mutex_unlock(&data->forks_mutex[fork_ind]);
+	return (result);
 }
 
 void	lay_fork_down(t_philo_ind *philo_ind, int fork_ind)
 {
 	int *forks;
+	t_data	*data;
 
+	data = philo_ind->data;
 	forks = philo_ind->data->forks;
-	forks[fork_ind] = 0;
+	pthread_mutex_lock(&data->forks_mutex[fork_ind]);
+	if (forks[fork_ind] == philo_ind->ind + 1)
+		forks[fork_ind] = 0;
+	pthread_mutex_unlock(&data->forks_mutex[fork_ind]);
 }
 
 void	eat(t_philo_ind *philo_ind)
@@ -94,25 +107,25 @@ int	try_to_eat(t_philo_ind *philo_ind)
 	else
 		left_ind = ind - 1;
 	//printf("ind = %d, left_ind = %d\n", ind, left_ind);
-	lock_fork_mutexes(ind, left_ind, data);
+	//lock_fork_mutexes(ind, left_ind, data);
 	//printf("data->forks[%d] = %d\n", ind, data->forks[ind]);
 	//printf("data->forks[%d] = %d\n", left_ind, data->forks[left_ind]);
 	//pthread_mutex_lock(&data->forks_mutex[ind]);
 	//if (ind != left_ind)
 	//	pthread_mutex_lock(&data->forks_mutex[left_ind]);
 	//printf("ind = %d, left_ind = %d\n", ind, left_ind);
-	if ((data->forks[ind] == 0) && (data->forks[left_ind] == 0))
+	if ((take_fork(philo_ind, ind)) && (take_fork(philo_ind, left_ind)))
 	{
-		take_fork(philo_ind, ind);
-		take_fork(philo_ind, left_ind);
-		unlock_fork_mutexes(ind, left_ind, data);
+	//	take_fork(philo_ind, ind);
+	//	take_fork(philo_ind, left_ind);
+	//	unlock_fork_mutexes(ind, left_ind, data);
 		eat(philo_ind);
 		has_not_eaten = 0;
-		lock_fork_mutexes(ind, left_ind, data);
+	//	lock_fork_mutexes(ind, left_ind, data);
+	}
 		lay_fork_down(philo_ind, ind);
 		lay_fork_down(philo_ind, left_ind);
-	}
-	unlock_fork_mutexes(ind, left_ind, data);
+	//unlock_fork_mutexes(ind, left_ind, data);
 	/*
 	pthread_mutex_unlock(&data->forks_mutex[ind]);
 		if (ind != left_ind)
