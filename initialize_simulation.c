@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/08 11:04:55 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:44:45 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	set_end_simulation_var_value(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philosophers)
 	{
-		pthread_mutex_lock(&data->counter_mutex);
+		pthread_mutex_lock(&data->eat_counter_mutex[i]);
 		if (data->counter[i] < data->number_of_times_each_philosopher_must_eat)
 		{
-			pthread_mutex_unlock(&data->counter_mutex);
+			pthread_mutex_unlock(&data->eat_counter_mutex[i]);
 			break ;
 		}
-		pthread_mutex_unlock(&data->counter_mutex);
+		pthread_mutex_unlock(&data->eat_counter_mutex[i]);
 	}
 	if (i == data->number_of_philosophers)
 	{
@@ -110,18 +110,18 @@ void	*routine(void *philo_ind_i)
 		{
 			if (simulation_should_end(data))
 				break ;
-			//usleep(1000);
+			usleep(500);
 		}
 		
-		pthread_mutex_lock(&data->counter_mutex);
-		if (data->end_simulation == 0)
-		{
+		pthread_mutex_lock(&data->eat_counter_mutex[ind]);
+		//if (data->end_simulation == 0)
+		//{
 			data->counter[ind]++;
 			
-		pthread_mutex_unlock(&data->counter_mutex);
-		}
-		else
-			pthread_mutex_unlock(&data->counter_mutex);
+		pthread_mutex_unlock(&data->eat_counter_mutex[ind]);
+		//}
+		//else
+		//	pthread_mutex_unlock(&data->counter_mutex);
 			
 		if (data->number_of_times_each_philosopher_must_eat)
 			set_end_simulation_var_value(data);

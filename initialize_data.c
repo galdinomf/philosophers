@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:28:59 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/07 17:11:21 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:50:03 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_data	*initialize_data(int *parameters)
 	data->number_of_philosophers = n_philos;
 	data->philos = (pthread_t *) malloc((n_philos) * sizeof(pthread_t));
 	data->forks = (int *) ft_calloc(n_philos, sizeof(int));
+	data->fork_used = (int *) ft_calloc(n_philos, sizeof(int));
 	data->counter = (int *) ft_calloc(n_philos, sizeof(int));
 	data->eat_time = (int *) ft_calloc(n_philos, sizeof(int));
 	data->forks_mutex = (pthread_mutex_t *) malloc((n_philos) * sizeof(pthread_mutex_t));
@@ -38,6 +39,10 @@ t_data	*initialize_data(int *parameters)
 	i = -1;
 	while (++i < n_philos)
 		pthread_mutex_init(&data->eat_time_mutex[i], NULL);
+	data->eat_counter_mutex = (pthread_mutex_t *) malloc((n_philos) * sizeof(pthread_mutex_t));
+	i = -1;
+	while (++i < n_philos)
+		pthread_mutex_init(&data->eat_counter_mutex[i], NULL);
 	gettimeofday(&initial_time, NULL);
 	data->initial_time_ms = (initial_time.tv_sec * 1000) + \
 								(initial_time.tv_usec / 1000);

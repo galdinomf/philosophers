@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:22:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/07 17:11:01 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:49:54 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ typedef struct s_data
 	pthread_mutex_t	counter_mutex;
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	*eat_time_mutex;
+	pthread_mutex_t	*eat_counter_mutex;
 	int			*forks;
+	int			*fork_used;
 	int			*counter;
 	int			*eat_time;
 	int			number_of_philosophers;
