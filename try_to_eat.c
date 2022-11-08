@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:38:51 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/05 12:48:53 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/07 16:03:38 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void	eat(t_philo_ind *philo_ind)
 	//printf("%d %d is eating\n", timestamp, ind + 1);
 	pthread_mutex_lock(&data->eat_time_mutex[ind]);	
 	data->eat_time[ind] = get_timestamp(data);
-	pthread_mutex_unlock(&data->eat_time_mutex[ind]);
 	display_message("is eating", philo_ind);
+	pthread_mutex_unlock(&data->eat_time_mutex[ind]);
 	usleep(data->time_to_eat * 1000);
 }
 
@@ -100,6 +100,8 @@ int	try_to_eat(t_philo_ind *philo_ind)
 	int		right_ind;
 	int		has_not_eaten;
 
+	if (philo_ind->data->number_of_philosophers == 1)
+		return (1);
 	data = philo_ind->data;
 	ind = philo_ind->ind;
 	has_not_eaten = 1;

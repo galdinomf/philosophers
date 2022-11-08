@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:28:59 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/29 12:55:48 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:11:21 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_data	*initialize_data(int *parameters)
 	data->end_simulation = 0;
 	pthread_mutex_init(&data->mutex, NULL);
 	pthread_mutex_init(&data->counter_mutex, NULL);
+	data->can_show_messages = 1;
 	return (data);
 }
 

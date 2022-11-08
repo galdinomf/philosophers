@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:26:12 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/29 12:50:11 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:13:55 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,18 @@ void	display_message(char *msg, t_philo_ind *philo_ind)
 	int	ind;
 	char	*s;
 	char	*s2;
+	int		time;
 
 	data = 	((t_philo_ind *) philo_ind)->data;
 	ind = ((t_philo_ind *) philo_ind)->ind;
 	s = ft_strjoin("%d %d ", msg);
 	s2 = ft_strjoin(s, "\n");
-	pthread_mutex_lock(&data->counter_mutex);
-	if (data->end_simulation == 0)
-		printf(s2, get_timestamp(data), ind + 1);
-	pthread_mutex_unlock(&data->counter_mutex);
+	time = get_timestamp(data);
+	
+	pthread_mutex_lock(&data->mutex);
+	if (data->can_show_messages == 1)
+		printf(s2, time, ind + 1);
+	pthread_mutex_unlock(&data->mutex);
 	free(s);
 	free(s2);
 }

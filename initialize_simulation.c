@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:19:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/03 15:23:08 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:04:55 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	simulation_should_end(t_data *data)
 {
-	pthread_mutex_lock(&data->counter_mutex);
+	 pthread_mutex_lock(&data->counter_mutex);
 	if (data->end_simulation)
 	{
 		pthread_mutex_unlock(&data->counter_mutex);
@@ -31,17 +31,33 @@ void	set_end_simulation_var_value(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philosophers)
 	{
+		pthread_mutex_lock(&data->counter_mutex);
 		if (data->counter[i] < data->number_of_times_each_philosopher_must_eat)
+		{
+			pthread_mutex_unlock(&data->counter_mutex);
 			break ;
+		}
+		pthread_mutex_unlock(&data->counter_mutex);
 	}
 	if (i == data->number_of_philosophers)
+	{
+		
+		pthread_mutex_lock(&data->counter_mutex);
 		data->end_simulation = 1;
+		pthread_mutex_unlock(&data->counter_mutex);
+		
+		pthread_mutex_lock(&data->mutex);
+		data->can_show_messages = 0;
+		pthread_mutex_unlock(&data->mutex);
+	}
 }
 
 void	*death_check(void *philo_ind)
 {
 	int	i;
 	t_data	*data;
+	int	eat_time_i;
+	int	current_time;
 
 	data = (*(t_philo_ind **) philo_ind)->data;
 	i = -1;
@@ -50,17 +66,25 @@ void	*death_check(void *philo_ind)
 		++i;
 		if (i == data->number_of_philosophers)
 			i = 0;
+		current_time = get_timestamp(data);
 		pthread_mutex_lock(&data->eat_time_mutex[i]);
-		if ((get_timestamp(data) - data->eat_time[i]) > data->time_to_die)
+		eat_time_i = data->eat_time[i];
+		if ((current_time - eat_time_i) > data->time_to_die)
 		{
-			pthread_mutex_unlock(&data->eat_time_mutex[i]);
 			display_message("died", ((t_philo_ind **) philo_ind)[i]);
 			pthread_mutex_lock(&data->counter_mutex);
+		
+		pthread_mutex_lock(&data->mutex);
 			data->end_simulation = 1;
+		data->can_show_messages = 0;
+			pthread_mutex_unlock(&data->eat_time_mutex[i]);
 			pthread_mutex_unlock(&data->counter_mutex);
+		pthread_mutex_unlock(&data->mutex);
 			break;
 		}
-		pthread_mutex_unlock(&data->eat_time_mutex[i]);	
+		else
+			pthread_mutex_unlock(&data->eat_time_mutex[i]);
+		//pthread_mutex_unlock(&data->eat_time_mutex[i]);	
 	}
 	return (NULL);
 }
@@ -86,14 +110,21 @@ void	*routine(void *philo_ind_i)
 		{
 			if (simulation_should_end(data))
 				break ;
-			usleep(1000);
+			//usleep(1000);
 		}
+		
 		pthread_mutex_lock(&data->counter_mutex);
 		if (data->end_simulation == 0)
+		{
 			data->counter[ind]++;
+			
+		pthread_mutex_unlock(&data->counter_mutex);
+		}
+		else
+			pthread_mutex_unlock(&data->counter_mutex);
+			
 		if (data->number_of_times_each_philosopher_must_eat)
 			set_end_simulation_var_value(data);
-		pthread_mutex_unlock(&data->counter_mutex);
 		display_message("is sleeping", philo_ind_i);
 		//printf("%d %d is sleeping\n", get_timestamp(data), ind + 1);
 		usleep(data->time_to_sleep * 1000);

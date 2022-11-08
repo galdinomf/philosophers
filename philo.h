@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:22:42 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/29 12:55:36 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:11:01 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_data
 	int			number_of_times_each_philosopher_must_eat;
 	int			initial_time_ms;
 	int			end_simulation;
+	int			can_show_messages;
 }	t_data;
 
 typedef struct s_philo_ind
