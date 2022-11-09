@@ -15,7 +15,7 @@ SRCS	= main.c\
 
 SRCS_B	= 
 
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS	= -Wall -Wextra -Werror -g #-fsanitize=thread
 
 OBJS	= $(SRCS:.c=.o)
 OBJS_B	= $(SRCS_B:.c=.o)
@@ -37,11 +37,12 @@ $(NAME): $(OBJS) $(HDR)
 	$(RM) main_bonus.o
 	ar -crs $(NAME) $(OBJS)
 	$(RM) $(PROG_NAME)
-	clang -fsanitize=thread $(NAME) -o $(PROG_NAME)
-#	gcc $(NAME) -o $(PROG_NAME)
+#	clang -fsanitize=thread $(NAME) -o $(PROG_NAME)
+	gcc $(NAME) -o $(PROG_NAME)
 
 %.o: %.c $(HDR_DIR)$(HDR)
-	clang $(CFLAGS) -c $< -o $@
+#	clang $(CFLAGS) -c $< -o $@
+	gcc -lpthread $(CFLAGS) -c $< -o $@
 
 $(NAME_B): $(OBJS_B) $(HDR)
 	$(RM) main.o

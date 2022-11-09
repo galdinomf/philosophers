@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:37:52 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/08 23:30:16 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/09 10:46:56 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ void	free_data(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philosophers)
 		pthread_mutex_destroy(&data->forks_mutex[i]);
+	free(data->forks_mutex);
 	i = -1;
 	while (++i < data->number_of_philosophers)
 		pthread_mutex_destroy(&data->eat_time_mutex[i]);
+	free(data->eat_time_mutex);
 	i = -1;
 	while (++i < data->number_of_philosophers)
 		pthread_mutex_destroy(&data->eat_counter_mutex[i]);
-	free(data->forks_mutex);
-	free(data->eat_time_mutex);
+	free(data->eat_counter_mutex);
 	pthread_mutex_destroy(&data->mutex);
 	pthread_mutex_destroy(&data->counter_mutex);
 	free(data->philos);
