@@ -6,7 +6,7 @@
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:38:57 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/10/25 14:59:11 by mgaldino         ###   ########.fr       */
+/*   Updated: 2022/11/08 23:30:40 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	check_input_and_initialize(int argc, char *argv[], int *parameters)
 		if (is_numeric(argv[i]))
 			parameters[i - 1] = ft_atoi(argv[i]);
 		else
-			{
-				printf("All arguments must be numeric!\n");
-				return (2);
-			}
+		{
+			printf("All arguments must be numeric!\n");
+			return (2);
+		}
 	}
 	if (i == 5)
 		parameters[4] = 0;

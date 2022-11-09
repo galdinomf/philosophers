@@ -11,6 +11,7 @@ SRCS	= main.c\
 		  display_message.c\
 		  ft_strjoin.c\
 		  ft_calloc.c\
+		  simulation_should_end.c\
 
 SRCS_B	= 
 

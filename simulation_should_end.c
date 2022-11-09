@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   simulation_should_end.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgaldino <mgaldino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 10:23:05 by mgaldino          #+#    #+#             */
-/*   Updated: 2022/11/08 23:30:00 by mgaldino         ###   ########.fr       */
+/*   Created: 2022/11/08 23:22:09 by mgaldino          #+#    #+#             */
+/*   Updated: 2022/11/08 23:22:21 by mgaldino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+int	simulation_should_end(t_data *data)
 {
-	int		parameters[5];
-	t_data	*data;
-
-	if (check_input_and_initialize(argc, argv, parameters))
+	pthread_mutex_lock(&data->counter_mutex);
+	if (data->end_simulation)
+	{
+		pthread_mutex_unlock(&data->counter_mutex);
 		return (1);
-	data = initialize_data(parameters);
-	initialize_simulation(data);
-	free_data(data);
+	}
+	pthread_mutex_unlock(&data->counter_mutex);
 	return (0);
 }
